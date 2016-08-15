@@ -12,16 +12,40 @@
 (например, ?count=10&lang=ru и т.д.)*/
 
 const express = require('express'),
+      request = require('request'),
+      cheerio = require('cheerio'),
+      iconv = require('iconv-lite'),
       templating = require('consolidate'),
+      bodyParser = require('body-parser'),
       app = express();
 
 app.engine('hbs', templating.handlebars);
+app.use(bodyParser.json());
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 app.get('/', (req, res) => {
-  res.render('hello', {
-    title:'Привет, handlebars!'
-  });
+
+  request({url:'http://4pda.ru/news/', encoding:null}, (error, response, html) => {
+    if (!error && response.statusCode == 200){
+      result = iconv.decode(new Buffer(html), 'win1251');
+      const $ = cheerio.load(result);
+      let titles = [],
+          descriptions =[];
+      $('.post').map(function(i, el) {
+        titles[i] = $('[itemprop=name]').eq(i).text();
+        descriptions[i] = $('[itemprop=description]').eq(i).text();
+      });
+      res.render('index', {
+        title:'News',
+        titles: titles
+      });
+    }
+  })
+});
+
+app.post('/', (req, res) => {
+  console.log(req.body);
+  res.send('ok');
 });
 
 app.listen(8888);

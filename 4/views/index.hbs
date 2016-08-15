@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post" enctype="application/json">
+  <p>{{title}}</p>
+  <input type="text" name="number">
+  <p><input type="submit" value="Show"></p>
+</form>
+
+{{#each titles}}
+  <p>{{this}}</p>
+{{/each}}
+
+</body>
+</html>
