@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul class="duty_list">
+  <p>Todo</p>
+  {{#each duty}}
+    {{#if this}}
+      <li>
+        <form method="post" action="/update/{{@index}}" >
+          <input type="text" name="duty" value={{this}}>
+          <input type="submit" value="change" name="update">
+          <input type="submit" value="delete" name="update">
+        </form>
+      </li>
+    {{/if}}
+  {{/each}}
+</ul>
+
+<form method="post" action="/">
+  <input type="text" name="duty" placeholder="add some">
+  <input type="submit" value="Add">
+</form>
+
+</body>
+</html>

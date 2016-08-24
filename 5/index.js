@@ -1,8 +1,15 @@
 const express = require('express'),
       bodyParser = require('body-parser'),
-       templating = require('consolidate'),
-      app = express();
+      templating = require('consolidate'),
+      app = express(),
+      tasks = require('./modules/tasks'),
+      config = require('./modules/config'),
+      mysql = require('mysql'),      
+      connection = mysql.createConnection(config);
 
+connection.connect(function(err) {
+  if (err) console.error(err);
+})
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.engine('hbs', templating.handlebars);
